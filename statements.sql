@@ -1,7 +1,9 @@
 --*****************************************************************************************
 --=========================================================================================
---1 Buscamos en la tabla crime_scene_report la primera pista que dice que el crimen ocurrio el
-15/01/2018 en SQL City
+
+--Tabla crime_scene_report : guarda detalles de la fecha, la descripción del suceso, ciudad donde sucede y el tipo de suceso
+--***Pistas: el crimen ocurrio el 15/01/2018 en SQL City
+-- Buscamos en la tabla crime_scene_report la primera pista 
 
 SELECT * FROM crime_scene_report WHERE date ='20180115' AND city='SQL City' AND type='murder'
 
@@ -19,7 +21,8 @@ date	    type	description	                                                      
 
 --*****************************************************************************************
 --=========================================================================================
---2 Buscamos en tabla person información de los testigos
+ 
+-- Tabla person: guarda los datos de las personas como nombre, domicilio, número y el número de id que le relaciona con la tabla de drivers_license
 
 --Testigo 1 vive en la última casa de "Northwestern Dr
 SELECT  * FROM person WHERE address_street_name='Northwestern Dr'
@@ -41,7 +44,7 @@ id	   name         license_id	address_number	address_street_name	ssn
 
 --*****************************************************************************************
 --=========================================================================================
---3. En la tabla interview podemos obtener información sobre los datos
+--Tabla interview:  podemos obtener información sobre los datos
 --que aportarón los testigos en el interrogatorio
 
 --Información que aporte Morty Schapiro que tiene id 14887
@@ -71,6 +74,17 @@ person_id	transcript
 
 --*****************************************************************************************
 --=========================================================================================
+
+--Buscamos en las tablas person, get_fit_now_member y drivers_license
+
+
+
+--Tabla get_fit_now_member :guarda los datos de la persona, tiene el campo person_id que le relaciona con la tabla person, 
+--cuando empezó en el gimnasio y que estatus tiene (gold,regular,silver)
+
+--Tabla drivers_license: Se guardan datos de edad,color de ojos, color de pelo, sexo, número de placa, marca de coche y modelo de las personas almacenadas 
+--en la tabla person y se relacionan con los campos id y license_id
+
 --4 ***Pistas: Buscamos las pistas aportadas por los testidos.
 --Testigo 14887 Morty Schapiro
 --Bolsa con la inscripción "Get Fit Now Gym"
@@ -96,6 +110,9 @@ id	name	license_id
 --  Vio el asesinato y reconoce al asesino 
 -- habia estado en su gimnasio la semana pasada
 -- el 9 de enero.
+
+--Tabla get_fit_now_check_in: guarda los datos de los miembros del gimnasio como el id que le relaciona con la tala get_fit_now_member, la fecha 
+--en que ha entrenado en el gimnasio
 
 SELECT p.id,p.name 
 FROM person p
@@ -131,10 +148,11 @@ try querying the interview transcript of the murderer to find the real villain b
   
   
 
-
+--Continuamos...
+--Vamos a buscar la mujer que ordeno el asesinato
 --*****************************************************************************************
 --=========================================================================================
---5. ***Pistas: Consultamos el interrogatorio del asesino Jeremy Bowers
+--  ***Pistas: Consultamos el interrogatorio del asesino Jeremy Bowers
 SELECT * FROM interview WHERE person_id='67318'
 
 --======resultado
@@ -143,10 +161,12 @@ person_id	transcript
 around 5'5" (65") or 5'7" (67"). She has red hair and she drives a Tesla Model S. 
 I know that she attended the SQL Symphony Concert 3 times in December 2017.
 
---6. ***Pistas: En el interrogatorio dice el asesino que le ha contratado una mujer adinerada de la que no sabe su nombre, solo sabe que 
+--  ***Pistas: En el interrogatorio dice el asesino que le ha contratado una mujer adinerada de la que no sabe su nombre, solo sabe que 
 --tiene una estatura que está entre 1.65 y 1.70, pelo rojo, tiene un Tesla Model S
 --y que asistio al concierto sinfónico tres veces en diciembre de 2017
 
+--Tabla facebook_event_checkin : guarda detalles eventos, fecha, nombre del evento y personas que han asistido, se relaciona con 
+--la tabla person con el campo person_id
 
 SELECT person_id, count(*) FROM facebook_event_checkin
 WHERE  event_name ='SQL Symphony Concert'
@@ -162,7 +182,7 @@ person_id	count(*)
 --En la consula anterior me dice que hay dos personas con id (24556 y 99716) que asistieron tres veces en diciembre del 2017
 --al concierto de SQL Symphony Concert
 
--- 7. En la siguiente consulta busco a una persona que sea peli roja que mida 65" a 67" y qeu tenga un coche Tesla Moldel S,
+-- ***Pistas: En la siguiente consulta busco a una persona que sea peli roja que mida 65" a 67" y qeu tenga un coche Tesla Moldel S,
 --de genero femenino y que además se encuentre entre los dos person_id que encontré en la consulta anterior
 
 SELECT p.id,name FROM person p
